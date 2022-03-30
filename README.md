@@ -1,2 +1,2 @@
 # uusd-uz
-UUSD codes of Uzbekistan
+USSD codes of Uzbekistan
