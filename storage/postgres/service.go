@@ -50,7 +50,7 @@ func (s serviceRepository) GetService(id int) (structs.ServiceStruct, error) {
 	return service, nil
 }
 
-func (s serviceRepository) GetListService() ([]structs.ServiceStruct, error) {
+func (s serviceRepository) GetListServices() ([]structs.ServiceStruct, error) {
 	rows, err := s.db.Queryx(`
 		SELECT id, name, description, company_id, created_at, updated_at FROM services WHERE deleted_at IS NULL order by id
 		`)

@@ -42,7 +42,7 @@ func (p packageRepository) CreatePackage(pack structs.PackageStruct) (structs.Pa
 
 func (p packageRepository) GetPackage(id int) (structs.PackageStruct, error) {
 	var pack structs.PackageStruct
-	err := p.db.QueryRow(`select  id, name, description, capacity, cost, code, set_id from packages
+	err := p.db.QueryRow(`select  id, name, description, capacity, cost, code, set_id, created_at, updated_at from packages
 	where deleted_at is null and id=$1`, id).
 		Scan(&pack.Id,
 			&pack.Name,
@@ -60,9 +60,9 @@ func (p packageRepository) GetPackage(id int) (structs.PackageStruct, error) {
 	return pack, nil
 }
 
-func (p packageRepository) GetListPackage() ([]structs.PackageStruct, error) {
+func (p packageRepository) GetListPackages() ([]structs.PackageStruct, error) {
 	rows, err := p.db.Queryx(`
-		SELECT id, name, description, capacity, cost, code, set_id from packages WHERE deleted_at IS NULL order by id
+		SELECT id, name, description, capacity, cost, code, set_id, created_at, updated_at from packages WHERE deleted_at IS NULL order by id
 		`)
 	if err != nil {
 		return nil, err
@@ -105,7 +105,6 @@ func (p packageRepository) UpdatePackage(pack structs.PackageStruct) (structs.Pa
 	result, err := p.db.Exec(`UPDATE packages SET name=$1, description=$2, capacity=$3, cost=$4, code=$5,
                     set_id=$6, updated_at=$7 WHERE id=$8`,
 		&pack.Name,
-		&pack.Description,
 		&pack.Description,
 		&pack.Capacity,
 		&pack.Cost,

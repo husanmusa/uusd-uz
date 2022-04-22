@@ -3,6 +3,7 @@ package postgres
 import (
 	"database/sql"
 	"github.com/husanmusa/uusd-uz/pkg/structs"
+	"github.com/husanmusa/uusd-uz/pkg/utils"
 	"github.com/husanmusa/uusd-uz/storage/repo"
 	"github.com/jmoiron/sqlx"
 	"time"
@@ -19,12 +20,12 @@ func NewCompanyRepo(db *sqlx.DB) repo.CompanyRepoInterface {
 }
 
 func (c companyRepository) CreateCompany(company structs.CompanyStruct) (structs.CompanyStruct, error) {
+	cover := utils.StringToNullTime(company.Cover)
 	err := c.db.QueryRow(`INSERT INTO companies(name, cover, slogan)
-	 VALUES ($1, $2, $3) returning id`, company.Name, company.Cover, company.Slogan).Scan(&company.Id)
+	 VALUES ($1, $2, $3) returning id`, company.Name, cover, company.Slogan).Scan(&company.Id)
 	if err != nil {
 		return structs.CompanyStruct{}, err
 	}
-
 	company, err = c.GetCompany(company.Id)
 	if err != nil {
 		return structs.CompanyStruct{}, err
@@ -34,23 +35,29 @@ func (c companyRepository) CreateCompany(company structs.CompanyStruct) (structs
 }
 
 func (c companyRepository) GetCompany(id int) (structs.CompanyStruct, error) {
-	var company structs.CompanyStruct
+	var (
+		company structs.CompanyStruct
+		cover   sql.NullString
+	)
+
 	err := c.db.QueryRow(`select  id, name, cover, slogan, created_at, updated_at from companies
 	where deleted_at is null and id=$1`, id).
 		Scan(&company.Id,
 			&company.Name,
-			&company.Cover,
+			&cover,
 			&company.Slogan,
 			&company.CreatedAt,
 			&company.UpdatedAt)
 	if err != nil {
 		return structs.CompanyStruct{}, err
 	}
-
+	if !cover.Valid {
+		company.Cover = cover.String
+	}
 	return company, nil
 }
 
-func (c companyRepository) GetListCompany() ([]structs.CompanyStruct, error) {
+func (c companyRepository) GetListCompanies() ([]structs.CompanyStruct, error) {
 	rows, err := c.db.Queryx(`
 		SELECT id, name, cover, slogan, created_at, updated_at FROM companies WHERE deleted_at IS NULL order by id
 		`)
@@ -67,11 +74,14 @@ func (c companyRepository) GetListCompany() ([]structs.CompanyStruct, error) {
 	)
 
 	for rows.Next() {
-		var company structs.CompanyStruct
+		var (
+			company structs.CompanyStruct
+			cover   sql.NullString
+		)
 		err = rows.Scan(
 			&company.Id,
 			&company.Name,
-			&company.Cover,
+			&cover,
 			&company.Slogan,
 			&company.CreatedAt,
 			&company.UpdatedAt)
@@ -81,7 +91,9 @@ func (c companyRepository) GetListCompany() ([]structs.CompanyStruct, error) {
 		if err != nil {
 			return nil, err
 		}
-
+		if !cover.Valid {
+			company.Cover = cover.String
+		}
 		companies = append(companies, company)
 	}
 

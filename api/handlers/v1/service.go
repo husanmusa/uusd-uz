@@ -11,19 +11,19 @@ import (
 	"github.com/husanmusa/uusd-uz/storage/postgres"
 )
 
-// CreateCompany ...
-// @Summary CreateCompany
-// @Description This API for creating a new company
-// @Tags company
+// CreateService ...
+// @Summary CreateService
+// @Description This API for creating a new service
+// @Tags service
 // @Accept json
 // @Produce json
-// @Param company request body structs.CompanyStruct true "CompanyCreateRequest"
-// @Success 200 {object} structs.CompanyStruct
+// @Param service request body structs.ServiceStruct true "ServiceCreateRequest"
+// @Success 200 {object} structs.ServiceStruct
 // @Failure 400 {object} structs.StandardErrorModel
 // @Failure 500 {object} structs.StandardErrorModel
-// @Router /v1/companies [post]
-func (h *handlerV1) CreateCompany(c *gin.Context) {
-	var body structs.CompanyStruct
+// @Router /v1/services [post]
+func (h *handlerV1) CreateService(c *gin.Context) {
+	var body structs.ServiceStruct
 	err := c.ShouldBindJSON(&body)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -33,86 +33,86 @@ func (h *handlerV1) CreateCompany(c *gin.Context) {
 		return
 	}
 
-	response, err := postgres.NewCompanyRepo(h.db).CreateCompany(body)
+	response, err := postgres.NewServiceRepo(h.db).CreateService(body)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
-		h.log.Error("failed to create company", l.Error(err))
+		h.log.Error("failed to create service", l.Error(err))
 		return
 	}
 
 	c.JSON(http.StatusCreated, response)
 }
 
-// GetCompany ...
-// @Summary GetCompany
-// @Description This API for getting company detail
-// @Tags company
+// GetService ...
+// @Summary GetService
+// @Description This API for getting service detail
+// @Tags service
 // @Accept json
 // @Produce json
-// @Param id path string true "CompanyId"
-// @Success 200 {object} structs.CompanyStruct
+// @Param id path string true "ServiceId"
+// @Success 200 {object} structs.ServiceStruct
 // @Failure 400 {object} structs.StandardErrorModel
 // @Failure 500 {object} structs.StandardErrorModel
-// @Router /v1/companies/{id} [get]
-func (h *handlerV1) GetCompany(c *gin.Context) {
+// @Router /v1/services/{id} [get]
+func (h *handlerV1) GetService(c *gin.Context) {
 	guid, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		h.log.Error("Failed to parse string to int", l.Error(err))
 	}
 
-	response, err := postgres.NewCompanyRepo(h.db).GetCompany(guid)
+	response, err := postgres.NewServiceRepo(h.db).GetService(guid)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
-		h.log.Error("failed to get company", l.Error(err))
+		h.log.Error("failed to get service", l.Error(err))
 		return
 	}
 
 	c.JSON(http.StatusOK, response)
 }
 
-// GetListCompanies ...
-// @Summary ListCompanies
-// @Description This API for getting list of companies
-// @Tags company
+// GetListServices ...
+// @Summary ListServices
+// @Description This API for getting list of services
+// @Tags service
 // @Accept json
 // @Produce json
-// @Success 200 {object} []structs.CompanyStruct
+// @Success 200 {object} []structs.ServiceStruct
 // @Failure 400 {object} structs.StandardErrorModel
 // @Failure 500 {object} structs.StandardErrorModel
-// @Router /v1/companies [get]
-func (h *handlerV1) GetListCompanies(c *gin.Context) {
-	response, err := postgres.NewCompanyRepo(h.db).GetListCompanies()
+// @Router /v1/services [get]
+func (h *handlerV1) GetListServices(c *gin.Context) {
+	response, err := postgres.NewServiceRepo(h.db).GetListServices()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
-		h.log.Error("failed to list company", l.Error(err))
+		h.log.Error("failed to list service", l.Error(err))
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"companies": response,
+		"services": response,
 	})
 }
 
-// UpdateCompany ...
-// @Summary UpdateCompany
-// @Description This API for updating company
-// @Tags company
+// UpdateService ...
+// @Summary UpdateService
+// @Description This API for updating service
+// @Tags service
 // @Accept json
 // @Produce json
-// @Param id path string true "CompanyId"
-// @Param User request body structs.CompanyStruct true "CompanyUpdateRequest"
-// @Success 200 {object} structs.CompanyStruct
+// @Param id path string true "ServiceId"
+// @Param User request body structs.ServiceStruct true "ServiceUpdateRequest"
+// @Success 200 {object} structs.ServiceStruct
 // @Failure 400 {object} structs.StandardErrorModel
 // @Failure 500 {object} structs.StandardErrorModel
-// @Router /v1/companies/{id} [put]
-func (h *handlerV1) UpdateCompany(c *gin.Context) {
-	var body structs.CompanyStruct
+// @Router /v1/services/{id} [put]
+func (h *handlerV1) UpdateService(c *gin.Context) {
+	var body structs.ServiceStruct
 
 	err := c.ShouldBindJSON(&body)
 	if err != nil {
@@ -128,41 +128,41 @@ func (h *handlerV1) UpdateCompany(c *gin.Context) {
 		h.log.Error("Failed to parse string to int", l.Error(err))
 	}
 
-	response, err := postgres.NewCompanyRepo(h.db).UpdateCompany(body)
+	response, err := postgres.NewServiceRepo(h.db).UpdateService(body)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
-		h.log.Error("failed to update company", l.Error(err))
+		h.log.Error("failed to update service", l.Error(err))
 		return
 	}
 
 	c.JSON(http.StatusOK, response)
 }
 
-// DeleteCompany ...
-// @Summary DeleteCompany
-// @Description This API for deleting the company
-// @Tags company
+// DeleteService ...
+// @Summary DeleteService
+// @Description This API for deleting the service
+// @Tags service
 // @Accept json
 // @Produce json
-// @Param id path string true "CompanyId"
+// @Param id path string true "ServiceId"
 // @Success 200
 // @Failure 400 {object} structs.StandardErrorModel
 // @Failure 500 {object} structs.StandardErrorModel
-// @Router /v1/companies/{id} [delete]
-func (h *handlerV1) DeleteCompany(c *gin.Context) {
+// @Router /v1/services/{id} [delete]
+func (h *handlerV1) DeleteService(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		h.log.Error("Failed to parse string to int", l.Error(err))
 	}
 
-	err = postgres.NewCompanyRepo(h.db).DeleteCompany(id)
+	err = postgres.NewServiceRepo(h.db).DeleteService(id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
-		h.log.Error("failed to delete company", l.Error(err))
+		h.log.Error("failed to delete service", l.Error(err))
 		return
 	}
 

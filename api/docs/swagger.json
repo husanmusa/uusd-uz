@@ -219,6 +219,654 @@
                     }
                 }
             }
+        },
+        "/v1/packages": {
+            "get": {
+                "description": "This API for getting list of packages",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "package"
+                ],
+                "summary": "GetListPackages",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/structs.PackageStruct"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "This API for creating a new package",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "package"
+                ],
+                "summary": "CreatePackage",
+                "parameters": [
+                    {
+                        "description": "PackageCreateRequest",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/structs.PackageStruct"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/structs.PackageStruct"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/packages/{id}": {
+            "get": {
+                "description": "This API for getting package detail",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "package"
+                ],
+                "summary": "GetPackage",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "PackageId",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/structs.PackageStruct"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "This API for updating package",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "package"
+                ],
+                "summary": "UpdateSetUpdatePackage",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "PackageId",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "PackageUpdateRequest",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/structs.PackageStruct"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/structs.PackageStruct"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "This API for deleting the package",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "package"
+                ],
+                "summary": "DeletePackage",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "PackageId",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/services": {
+            "get": {
+                "description": "This API for getting list of services",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "service"
+                ],
+                "summary": "ListServices",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/structs.ServiceStruct"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "This API for creating a new service",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "service"
+                ],
+                "summary": "CreateService",
+                "parameters": [
+                    {
+                        "description": "ServiceCreateRequest",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/structs.ServiceStruct"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/structs.ServiceStruct"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/services/{id}": {
+            "get": {
+                "description": "This API for getting service detail",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "service"
+                ],
+                "summary": "GetService",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ServiceId",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/structs.ServiceStruct"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "This API for updating service",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "service"
+                ],
+                "summary": "UpdateService",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ServiceId",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "ServiceUpdateRequest",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/structs.ServiceStruct"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/structs.ServiceStruct"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "This API for deleting the service",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "service"
+                ],
+                "summary": "DeleteService",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ServiceId",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/sets": {
+            "get": {
+                "description": "This API for getting list of sets",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "set"
+                ],
+                "summary": "GetListSets",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/structs.SetStruct"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "This API for creating a new set",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "set"
+                ],
+                "summary": "CreateSet",
+                "parameters": [
+                    {
+                        "description": "SetCreateRequest",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/structs.SetStruct"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/structs.SetStruct"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/sets/{id}": {
+            "get": {
+                "description": "This API for getting set detail",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "set"
+                ],
+                "summary": "GetSet",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "SetId",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/structs.SetStruct"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "This API for updating set",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "set"
+                ],
+                "summary": "UpdateSet",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "SetId",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "SetUpdateRequest",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/structs.SetStruct"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/structs.SetStruct"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "This API for deleting the set",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "set"
+                ],
+                "summary": "DeleteSet",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "SetId",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/structs.StandardErrorModel"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -229,19 +877,17 @@
                     "type": "string"
                 },
                 "createdAt": {
+                    "description": "Services  ServiceStruct `json:\"serviceStruct\"`",
                     "type": "string"
                 },
                 "id": {
                     "type": "integer"
                 },
                 "name": {
-                    "type": "string"
-                },
-                "serviceStruct": {
-                    "$ref": "#/definitions/structs.ServiceStruct"
+                    "$ref": "#/definitions/structs.Language"
                 },
                 "slogan": {
-                    "type": "string"
+                    "$ref": "#/definitions/structs.Language"
                 },
                 "updatedAt": {
                     "type": "string"
@@ -256,6 +902,52 @@
                 }
             }
         },
+        "structs.Language": {
+            "type": "object",
+            "properties": {
+                "ki": {
+                    "type": "string"
+                },
+                "ru": {
+                    "type": "string"
+                },
+                "uz": {
+                    "type": "string"
+                }
+            }
+        },
+        "structs.PackageStruct": {
+            "type": "object",
+            "properties": {
+                "capacity": {
+                    "type": "integer"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "cost": {
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "description": {
+                    "$ref": "#/definitions/structs.Language"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "$ref": "#/definitions/structs.Language"
+                },
+                "setId": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
         "structs.ServiceStruct": {
             "type": "object",
             "properties": {
@@ -266,13 +958,36 @@
                     "type": "string"
                 },
                 "description": {
-                    "type": "string"
+                    "$ref": "#/definitions/structs.Language"
                 },
                 "id": {
                     "type": "integer"
                 },
                 "name": {
+                    "$ref": "#/definitions/structs.Language"
+                },
+                "updatedAt": {
                     "type": "string"
+                }
+            }
+        },
+        "structs.SetStruct": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "description": {
+                    "$ref": "#/definitions/structs.Language"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "$ref": "#/definitions/structs.Language"
+                },
+                "serviceId": {
+                    "type": "integer"
                 },
                 "updatedAt": {
                     "type": "string"

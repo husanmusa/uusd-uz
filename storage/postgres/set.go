@@ -35,7 +35,7 @@ func (s setRepository) CreateSet(set structs.SetStruct) (structs.SetStruct, erro
 
 func (s setRepository) GetSet(id int) (structs.SetStruct, error) {
 	var set structs.SetStruct
-	err := s.db.QueryRow(`select  id, name, description, service_id, updated_at from sets
+	err := s.db.QueryRow(`select  id, name, description, service_id, created_at, updated_at from sets
 	where deleted_at is null and id=$1`, id).
 		Scan(&set.Id,
 			&set.Name,
@@ -50,7 +50,7 @@ func (s setRepository) GetSet(id int) (structs.SetStruct, error) {
 	return set, nil
 }
 
-func (s setRepository) GetListSet() ([]structs.SetStruct, error) {
+func (s setRepository) GetListSets() ([]structs.SetStruct, error) {
 	rows, err := s.db.Queryx(`
 		SELECT id, name, description, service_id, created_at, updated_at FROM sets WHERE deleted_at IS NULL order by id
 		`)

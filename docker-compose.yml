@@ -1,0 +1,24 @@
+services:
+  postgres:
+    container_name: database
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pass
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+
+  api:
+    container_name: api
+    build: ./nt-staff-eval
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres:
+

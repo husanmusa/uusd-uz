@@ -11,19 +11,19 @@ import (
 	"github.com/husanmusa/uusd-uz/storage/postgres"
 )
 
-// CreateCompany ...
-// @Summary CreateCompany
-// @Description This API for creating a new company
-// @Tags company
+// CreateSet ...
+// @Summary CreateSet
+// @Description This API for creating a new set
+// @Tags set
 // @Accept json
 // @Produce json
-// @Param company request body structs.CompanyStruct true "CompanyCreateRequest"
-// @Success 200 {object} structs.CompanyStruct
+// @Param set request body structs.SetStruct true "SetCreateRequest"
+// @Success 200 {object} structs.SetStruct
 // @Failure 400 {object} structs.StandardErrorModel
 // @Failure 500 {object} structs.StandardErrorModel
-// @Router /v1/companies [post]
-func (h *handlerV1) CreateCompany(c *gin.Context) {
-	var body structs.CompanyStruct
+// @Router /v1/sets [post]
+func (h *handlerV1) CreateSet(c *gin.Context) {
+	var body structs.SetStruct
 	err := c.ShouldBindJSON(&body)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -33,86 +33,86 @@ func (h *handlerV1) CreateCompany(c *gin.Context) {
 		return
 	}
 
-	response, err := postgres.NewCompanyRepo(h.db).CreateCompany(body)
+	response, err := postgres.NewSetRepo(h.db).CreateSet(body)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
-		h.log.Error("failed to create company", l.Error(err))
+		h.log.Error("failed to create set", l.Error(err))
 		return
 	}
 
 	c.JSON(http.StatusCreated, response)
 }
 
-// GetCompany ...
-// @Summary GetCompany
-// @Description This API for getting company detail
-// @Tags company
+// GetSet ...
+// @Summary GetSet
+// @Description This API for getting set detail
+// @Tags set
 // @Accept json
 // @Produce json
-// @Param id path string true "CompanyId"
-// @Success 200 {object} structs.CompanyStruct
+// @Param id path string true "SetId"
+// @Success 200 {object} structs.SetStruct
 // @Failure 400 {object} structs.StandardErrorModel
 // @Failure 500 {object} structs.StandardErrorModel
-// @Router /v1/companies/{id} [get]
-func (h *handlerV1) GetCompany(c *gin.Context) {
+// @Router /v1/sets/{id} [get]
+func (h *handlerV1) GetSet(c *gin.Context) {
 	guid, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		h.log.Error("Failed to parse string to int", l.Error(err))
 	}
 
-	response, err := postgres.NewCompanyRepo(h.db).GetCompany(guid)
+	response, err := postgres.NewSetRepo(h.db).GetSet(guid)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
-		h.log.Error("failed to get company", l.Error(err))
+		h.log.Error("failed to get set", l.Error(err))
 		return
 	}
 
 	c.JSON(http.StatusOK, response)
 }
 
-// GetListCompanies ...
-// @Summary ListCompanies
-// @Description This API for getting list of companies
-// @Tags company
+// GetListSets ...
+// @Summary GetListSets
+// @Description This API for getting list of sets
+// @Tags set
 // @Accept json
 // @Produce json
-// @Success 200 {object} []structs.CompanyStruct
+// @Success 200 {object} []structs.SetStruct
 // @Failure 400 {object} structs.StandardErrorModel
 // @Failure 500 {object} structs.StandardErrorModel
-// @Router /v1/companies [get]
-func (h *handlerV1) GetListCompanies(c *gin.Context) {
-	response, err := postgres.NewCompanyRepo(h.db).GetListCompanies()
+// @Router /v1/sets [get]
+func (h *handlerV1) GetListSets(c *gin.Context) {
+	response, err := postgres.NewSetRepo(h.db).GetListSets()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
-		h.log.Error("failed to list company", l.Error(err))
+		h.log.Error("failed to list set", l.Error(err))
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"companies": response,
+		"sets": response,
 	})
 }
 
-// UpdateCompany ...
-// @Summary UpdateCompany
-// @Description This API for updating company
-// @Tags company
+// UpdateSet ...
+// @Summary UpdateSet
+// @Description This API for updating set
+// @Tags set
 // @Accept json
 // @Produce json
-// @Param id path string true "CompanyId"
-// @Param User request body structs.CompanyStruct true "CompanyUpdateRequest"
-// @Success 200 {object} structs.CompanyStruct
+// @Param id path string true "SetId"
+// @Param User request body structs.SetStruct true "SetUpdateRequest"
+// @Success 200 {object} structs.SetStruct
 // @Failure 400 {object} structs.StandardErrorModel
 // @Failure 500 {object} structs.StandardErrorModel
-// @Router /v1/companies/{id} [put]
-func (h *handlerV1) UpdateCompany(c *gin.Context) {
-	var body structs.CompanyStruct
+// @Router /v1/sets/{id} [put]
+func (h *handlerV1) UpdateSet(c *gin.Context) {
+	var body structs.SetStruct
 
 	err := c.ShouldBindJSON(&body)
 	if err != nil {
@@ -128,41 +128,41 @@ func (h *handlerV1) UpdateCompany(c *gin.Context) {
 		h.log.Error("Failed to parse string to int", l.Error(err))
 	}
 
-	response, err := postgres.NewCompanyRepo(h.db).UpdateCompany(body)
+	response, err := postgres.NewSetRepo(h.db).UpdateSet(body)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
-		h.log.Error("failed to update company", l.Error(err))
+		h.log.Error("failed to update set", l.Error(err))
 		return
 	}
 
 	c.JSON(http.StatusOK, response)
 }
 
-// DeleteCompany ...
-// @Summary DeleteCompany
-// @Description This API for deleting the company
-// @Tags company
+// DeleteSet ...
+// @Summary DeleteSet
+// @Description This API for deleting the set
+// @Tags set
 // @Accept json
 // @Produce json
-// @Param id path string true "CompanyId"
+// @Param id path string true "SetId"
 // @Success 200
 // @Failure 400 {object} structs.StandardErrorModel
 // @Failure 500 {object} structs.StandardErrorModel
-// @Router /v1/companies/{id} [delete]
-func (h *handlerV1) DeleteCompany(c *gin.Context) {
+// @Router /v1/sets/{id} [delete]
+func (h *handlerV1) DeleteSet(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		h.log.Error("Failed to parse string to int", l.Error(err))
 	}
 
-	err = postgres.NewCompanyRepo(h.db).DeleteCompany(id)
+	err = postgres.NewSetRepo(h.db).DeleteSet(id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
-		h.log.Error("failed to delete company", l.Error(err))
+		h.log.Error("failed to delete set", l.Error(err))
 		return
 	}
 
