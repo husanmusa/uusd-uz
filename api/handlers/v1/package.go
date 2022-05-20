@@ -17,13 +17,13 @@ import (
 // @Tags package
 // @Accept json
 // @Produce json
-// @Param package request body structs.PackageStruct true "PackageCreateRequest"
+// @Param package request body structs.CreatePackage true "PackageCreateRequest"
 // @Success 200 {object} structs.PackageStruct
 // @Failure 400 {object} structs.StandardErrorModel
 // @Failure 500 {object} structs.StandardErrorModel
 // @Router /v1/packages [post]
 func (h *handlerV1) CreatePackage(c *gin.Context) {
-	var body structs.PackageStruct
+	var body structs.CreatePackage
 	err := c.ShouldBindJSON(&body)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -80,12 +80,18 @@ func (h *handlerV1) GetPackage(c *gin.Context) {
 // @Tags package
 // @Accept json
 // @Produce json
+// @Param id query string true "SetId"
 // @Success 200 {object} []structs.PackageStruct
 // @Failure 400 {object} structs.StandardErrorModel
 // @Failure 500 {object} structs.StandardErrorModel
 // @Router /v1/packages [get]
 func (h *handlerV1) GetListPackages(c *gin.Context) {
-	response, err := postgres.NewPackageRepo(h.db).GetListPackages()
+	id := c.Request.URL.Query()
+	guid, err := strconv.Atoi(id["id"][0])
+	if err != nil {
+		h.log.Error("Failed to parse string to int", l.Error(err))
+	}
+	response, err := postgres.NewPackageRepo(h.db).GetListPackages(guid)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),

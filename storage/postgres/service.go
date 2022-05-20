@@ -18,19 +18,20 @@ type serviceRepository struct {
 	db *sqlx.DB
 }
 
-func (s serviceRepository) CreateService(service structs.ServiceStruct) (structs.ServiceStruct, error) {
+func (s serviceRepository) CreateService(service structs.CreateService) (structs.ServiceStruct, error) {
+	var id int
 	err := s.db.QueryRow(`INSERT INTO services(name, description, company_id)
-	 VALUES ($1, $2, $3) returning id`, service.Name, service.Description, service.CompanyId).Scan(&service.Id)
+	 VALUES ($1, $2, $3) returning id`, service.Name, service.Description, service.CompanyId).Scan(&id)
 	if err != nil {
 		return structs.ServiceStruct{}, err
 	}
 
-	service, err = s.GetService(service.Id)
+	serviceNew, err := s.GetService(id)
 	if err != nil {
 		return structs.ServiceStruct{}, err
 	}
 
-	return service, nil
+	return serviceNew, nil
 }
 
 func (s serviceRepository) GetService(id int) (structs.ServiceStruct, error) {
@@ -50,10 +51,11 @@ func (s serviceRepository) GetService(id int) (structs.ServiceStruct, error) {
 	return service, nil
 }
 
-func (s serviceRepository) GetListServices() ([]structs.ServiceStruct, error) {
+func (s serviceRepository) GetListServices(companyId int) ([]structs.ServiceStruct, error) {
 	rows, err := s.db.Queryx(`
-		SELECT id, name, description, company_id, created_at, updated_at FROM services WHERE deleted_at IS NULL order by id
-		`)
+		SELECT id, name, description, company_id, created_at, updated_at FROM services WHERE deleted_at IS NULL 
+	   AND company_id=$1 order by id
+		`, companyId)
 	if err != nil {
 		return nil, err
 	}

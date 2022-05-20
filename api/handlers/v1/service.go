@@ -17,13 +17,13 @@ import (
 // @Tags service
 // @Accept json
 // @Produce json
-// @Param service request body structs.ServiceStruct true "ServiceCreateRequest"
+// @Param service request body structs.CreateService true "ServiceCreateRequest"
 // @Success 200 {object} structs.ServiceStruct
 // @Failure 400 {object} structs.StandardErrorModel
 // @Failure 500 {object} structs.StandardErrorModel
 // @Router /v1/services [post]
 func (h *handlerV1) CreateService(c *gin.Context) {
-	var body structs.ServiceStruct
+	var body structs.CreateService
 	err := c.ShouldBindJSON(&body)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -80,12 +80,18 @@ func (h *handlerV1) GetService(c *gin.Context) {
 // @Tags service
 // @Accept json
 // @Produce json
+// @Param id query string true "CompanyId"
 // @Success 200 {object} []structs.ServiceStruct
 // @Failure 400 {object} structs.StandardErrorModel
 // @Failure 500 {object} structs.StandardErrorModel
 // @Router /v1/services [get]
 func (h *handlerV1) GetListServices(c *gin.Context) {
-	response, err := postgres.NewServiceRepo(h.db).GetListServices()
+	id := c.Request.URL.Query()
+	guid, err := strconv.Atoi(id["id"][0])
+	if err != nil {
+		h.log.Error("Failed to parse string to int", l.Error(err))
+	}
+	response, err := postgres.NewServiceRepo(h.db).GetListServices(guid)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),

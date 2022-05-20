@@ -18,19 +18,20 @@ func NewSetRepo(db *sqlx.DB) repo.SetRepoInterface {
 	}
 }
 
-func (s setRepository) CreateSet(set structs.SetStruct) (structs.SetStruct, error) {
+func (s setRepository) CreateSet(set structs.CreateSet) (structs.SetStruct, error) {
+	var id int
 	err := s.db.QueryRow(`INSERT INTO sets(name, description, service_id)
-	 VALUES ($1, $2, $3) returning id`, set.Name, set.Description, set.ServiceId).Scan(&set.Id)
+	 VALUES ($1, $2, $3) returning id`, set.Name, set.Description, set.ServiceId).Scan(&id)
 	if err != nil {
 		return structs.SetStruct{}, err
 	}
 
-	set, err = s.GetSet(set.Id)
+	setNew, err := s.GetSet(id)
 	if err != nil {
 		return structs.SetStruct{}, err
 	}
 
-	return set, nil
+	return setNew, nil
 }
 
 func (s setRepository) GetSet(id int) (structs.SetStruct, error) {
@@ -50,10 +51,11 @@ func (s setRepository) GetSet(id int) (structs.SetStruct, error) {
 	return set, nil
 }
 
-func (s setRepository) GetListSets() ([]structs.SetStruct, error) {
+func (s setRepository) GetListSets(serviceId int) ([]structs.SetStruct, error) {
 	rows, err := s.db.Queryx(`
-		SELECT id, name, description, service_id, created_at, updated_at FROM sets WHERE deleted_at IS NULL order by id
-		`)
+		SELECT id, name, description, service_id, created_at, updated_at FROM sets WHERE deleted_at 
+		    IS NULL AND service_id=$1 order by id
+		`, serviceId)
 	if err != nil {
 		return nil, err
 	}

@@ -9,3 +9,9 @@ type CompanyStruct struct {
 	CreatedAt string `json:"createdAt"`
 	UpdatedAt string `json:"updatedAt"`
 }
+
+type CreateCompany struct {
+	Name   Language `json:"name"`
+	Cover  string   `json:"cover"`
+	Slogan Language `json:"slogan"`
+}

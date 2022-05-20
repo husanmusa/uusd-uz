@@ -72,7 +72,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/structs.CompanyStruct"
+                            "$ref": "#/definitions/structs.CreateCompany"
                         }
                     }
                 ],
@@ -245,6 +245,15 @@ const docTemplate = `{
                     "package"
                 ],
                 "summary": "GetListPackages",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "SetId",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -288,7 +297,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/structs.PackageStruct"
+                            "$ref": "#/definitions/structs.CreatePackage"
                         }
                     }
                 ],
@@ -461,6 +470,15 @@ const docTemplate = `{
                     "service"
                 ],
                 "summary": "ListServices",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "CompanyId",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -504,7 +522,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/structs.ServiceStruct"
+                            "$ref": "#/definitions/structs.CreateService"
                         }
                     }
                 ],
@@ -677,6 +695,15 @@ const docTemplate = `{
                     "set"
                 ],
                 "summary": "GetListSets",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ServiceId",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -720,7 +747,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/structs.SetStruct"
+                            "$ref": "#/definitions/structs.CreateSet"
                         }
                     }
                 ],
@@ -903,6 +930,71 @@ const docTemplate = `{
                 },
                 "updatedAt": {
                     "type": "string"
+                }
+            }
+        },
+        "structs.CreateCompany": {
+            "type": "object",
+            "properties": {
+                "cover": {
+                    "type": "string"
+                },
+                "name": {
+                    "$ref": "#/definitions/structs.Language"
+                },
+                "slogan": {
+                    "$ref": "#/definitions/structs.Language"
+                }
+            }
+        },
+        "structs.CreatePackage": {
+            "type": "object",
+            "properties": {
+                "capacity": {
+                    "type": "integer"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "cost": {
+                    "type": "integer"
+                },
+                "description": {
+                    "$ref": "#/definitions/structs.Language"
+                },
+                "name": {
+                    "$ref": "#/definitions/structs.Language"
+                },
+                "setId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "structs.CreateService": {
+            "type": "object",
+            "properties": {
+                "companyId": {
+                    "type": "integer"
+                },
+                "description": {
+                    "$ref": "#/definitions/structs.Language"
+                },
+                "name": {
+                    "$ref": "#/definitions/structs.Language"
+                }
+            }
+        },
+        "structs.CreateSet": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "$ref": "#/definitions/structs.Language"
+                },
+                "name": {
+                    "$ref": "#/definitions/structs.Language"
+                },
+                "serviceId": {
+                    "type": "integer"
                 }
             }
         },

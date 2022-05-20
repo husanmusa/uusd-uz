@@ -15,6 +15,48 @@ definitions:
       updatedAt:
         type: string
     type: object
+  structs.CreateCompany:
+    properties:
+      cover:
+        type: string
+      name:
+        $ref: '#/definitions/structs.Language'
+      slogan:
+        $ref: '#/definitions/structs.Language'
+    type: object
+  structs.CreatePackage:
+    properties:
+      capacity:
+        type: integer
+      code:
+        type: string
+      cost:
+        type: integer
+      description:
+        $ref: '#/definitions/structs.Language'
+      name:
+        $ref: '#/definitions/structs.Language'
+      setId:
+        type: integer
+    type: object
+  structs.CreateService:
+    properties:
+      companyId:
+        type: integer
+      description:
+        $ref: '#/definitions/structs.Language'
+      name:
+        $ref: '#/definitions/structs.Language'
+    type: object
+  structs.CreateSet:
+    properties:
+      description:
+        $ref: '#/definitions/structs.Language'
+      name:
+        $ref: '#/definitions/structs.Language'
+      serviceId:
+        type: integer
+    type: object
   structs.Error:
     properties:
       message:
@@ -123,7 +165,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/structs.CompanyStruct'
+          $ref: '#/definitions/structs.CreateCompany'
       produces:
       - application/json
       responses:
@@ -236,6 +278,12 @@ paths:
       consumes:
       - application/json
       description: This API for getting list of packages
+      parameters:
+      - description: SetId
+        in: query
+        name: id
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -266,7 +314,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/structs.PackageStruct'
+          $ref: '#/definitions/structs.CreatePackage'
       produces:
       - application/json
       responses:
@@ -379,6 +427,12 @@ paths:
       consumes:
       - application/json
       description: This API for getting list of services
+      parameters:
+      - description: CompanyId
+        in: query
+        name: id
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -409,7 +463,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/structs.ServiceStruct'
+          $ref: '#/definitions/structs.CreateService'
       produces:
       - application/json
       responses:
@@ -522,6 +576,12 @@ paths:
       consumes:
       - application/json
       description: This API for getting list of sets
+      parameters:
+      - description: ServiceId
+        in: query
+        name: id
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -552,7 +612,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/structs.SetStruct'
+          $ref: '#/definitions/structs.CreateSet'
       produces:
       - application/json
       responses:

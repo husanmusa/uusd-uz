@@ -17,13 +17,13 @@ import (
 // @Tags company
 // @Accept json
 // @Produce json
-// @Param company request body structs.CompanyStruct true "CompanyCreateRequest"
+// @Param company request body structs.CreateCompany true "CompanyCreateRequest"
 // @Success 200 {object} structs.CompanyStruct
 // @Failure 400 {object} structs.StandardErrorModel
 // @Failure 500 {object} structs.StandardErrorModel
 // @Router /v1/companies [post]
 func (h *handlerV1) CreateCompany(c *gin.Context) {
-	var body structs.CompanyStruct
+	var body structs.CreateCompany
 	err := c.ShouldBindJSON(&body)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{

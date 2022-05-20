@@ -19,19 +19,20 @@ func NewCompanyRepo(db *sqlx.DB) repo.CompanyRepoInterface {
 	}
 }
 
-func (c companyRepository) CreateCompany(company structs.CompanyStruct) (structs.CompanyStruct, error) {
+func (c companyRepository) CreateCompany(company structs.CreateCompany) (structs.CompanyStruct, error) {
 	cover := utils.StringToNullTime(company.Cover)
+	var id int
 	err := c.db.QueryRow(`INSERT INTO companies(name, cover, slogan)
-	 VALUES ($1, $2, $3) returning id`, company.Name, cover, company.Slogan).Scan(&company.Id)
+	 VALUES ($1, $2, $3) returning id`, company.Name, cover, company.Slogan).Scan(&id)
 	if err != nil {
 		return structs.CompanyStruct{}, err
 	}
-	company, err = c.GetCompany(company.Id)
+	companyNew, err := c.GetCompany(id)
 	if err != nil {
 		return structs.CompanyStruct{}, err
 	}
 
-	return company, nil
+	return companyNew, nil
 }
 
 func (c companyRepository) GetCompany(id int) (structs.CompanyStruct, error) {

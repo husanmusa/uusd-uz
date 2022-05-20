@@ -18,7 +18,8 @@ func NewPackageRepo(db *sqlx.DB) repo.PackageRepoInterface {
 	}
 }
 
-func (p packageRepository) CreatePackage(pack structs.PackageStruct) (structs.PackageStruct, error) {
+func (p packageRepository) CreatePackage(pack structs.CreatePackage) (structs.PackageStruct, error) {
+	var id int
 	err := p.db.QueryRow(`INSERT INTO packages(name, description, capacity, cost, code, set_id)
 	 VALUES ($1, $2, $3, $4, $5, $6) returning id`,
 		pack.Name,
@@ -27,17 +28,17 @@ func (p packageRepository) CreatePackage(pack structs.PackageStruct) (structs.Pa
 		pack.Cost,
 		pack.Code,
 		pack.SetId,
-	).Scan(&pack.Id)
+	).Scan(&id)
 	if err != nil {
 		return structs.PackageStruct{}, err
 	}
 
-	pack, err = p.GetPackage(pack.Id)
+	packNew, err := p.GetPackage(id)
 	if err != nil {
 		return structs.PackageStruct{}, err
 	}
 
-	return pack, nil
+	return packNew, nil
 }
 
 func (p packageRepository) GetPackage(id int) (structs.PackageStruct, error) {
@@ -60,10 +61,11 @@ func (p packageRepository) GetPackage(id int) (structs.PackageStruct, error) {
 	return pack, nil
 }
 
-func (p packageRepository) GetListPackages() ([]structs.PackageStruct, error) {
+func (p packageRepository) GetListPackages(setId int) ([]structs.PackageStruct, error) {
 	rows, err := p.db.Queryx(`
-		SELECT id, name, description, capacity, cost, code, set_id, created_at, updated_at from packages WHERE deleted_at IS NULL order by id
-		`)
+		SELECT id, name, description, capacity, cost, code, set_id, created_at, updated_at from packages WHERE deleted_at IS NULL 
+			 AND set_id=$1 order by id
+		`, setId)
 	if err != nil {
 		return nil, err
 	}

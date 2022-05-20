@@ -8,3 +8,9 @@ type ServiceStruct struct {
 	CreatedAt   string   `json:"createdAt"`
 	UpdatedAt   string   `json:"updatedAt"`
 }
+
+type CreateService struct {
+	Name        Language `json:"name"`
+	Description Language `json:"description"`
+	CompanyId   int      `json:"companyId"`
+}

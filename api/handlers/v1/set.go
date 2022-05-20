@@ -17,13 +17,13 @@ import (
 // @Tags set
 // @Accept json
 // @Produce json
-// @Param set request body structs.SetStruct true "SetCreateRequest"
+// @Param set request body structs.CreateSet true "SetCreateRequest"
 // @Success 200 {object} structs.SetStruct
 // @Failure 400 {object} structs.StandardErrorModel
 // @Failure 500 {object} structs.StandardErrorModel
 // @Router /v1/sets [post]
 func (h *handlerV1) CreateSet(c *gin.Context) {
-	var body structs.SetStruct
+	var body structs.CreateSet
 	err := c.ShouldBindJSON(&body)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -80,12 +80,19 @@ func (h *handlerV1) GetSet(c *gin.Context) {
 // @Tags set
 // @Accept json
 // @Produce json
+// @Param id query string true "ServiceId"
 // @Success 200 {object} []structs.SetStruct
 // @Failure 400 {object} structs.StandardErrorModel
 // @Failure 500 {object} structs.StandardErrorModel
 // @Router /v1/sets [get]
 func (h *handlerV1) GetListSets(c *gin.Context) {
-	response, err := postgres.NewSetRepo(h.db).GetListSets()
+	id := c.Request.URL.Query()
+	guid, err := strconv.Atoi(id["id"][0])
+	if err != nil {
+		h.log.Error("Failed to parse string to int", l.Error(err))
+	}
+
+	response, err := postgres.NewSetRepo(h.db).GetListSets(guid)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
